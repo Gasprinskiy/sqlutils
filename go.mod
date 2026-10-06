@@ -1,4 +1,4 @@
-module gitlab.davrbank.uz/crm/sqlutils
+module github.com/Gasprinskiy/sqlutils
 
 go 1.26.1
 

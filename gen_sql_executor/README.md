@@ -20,8 +20,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 func DeleteOrder(ctx context.Context, e session_manager.Executor, orderID int) error {
@@ -64,8 +64,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 type Order struct {
@@ -115,8 +115,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 type Order struct {
@@ -163,8 +163,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 type CreateOrderParams struct {
@@ -222,8 +222,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 func DeleteOrder(ctx context.Context, orderID int) error {

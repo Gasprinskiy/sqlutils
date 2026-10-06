@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 func Exec(

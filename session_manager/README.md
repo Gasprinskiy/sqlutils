@@ -16,8 +16,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 func UpdateData(ctx context.Context, e session_manager.Executor, data int) error {
@@ -64,8 +64,8 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 func UpdateData(ctx context.Context, data int) error {
@@ -118,8 +118,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.davrbank.uz/crm/sqlutils/gen_sql_executor"
-	"gitlab.davrbank.uz/crm/sqlutils/session_manager"
+	"gitlab..uz/crm/sqlutils/gen_sql_executor"
+	"gitlab..uz/crm/sqlutils/session_manager"
 )
 
 func UpdateData(ctx context.Context, e session_manager.Executor, data int) error {
