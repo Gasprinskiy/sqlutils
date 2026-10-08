@@ -10,4 +10,4 @@ go get github.com/Gasprinskiy/sqlutils@latest
 ```
 
 ## Important
-Project was made for the tasks I work on and may not be sutible for you, use with caution.
+Project was made for the tasks I work on and may not be suitable for you, use with caution.
