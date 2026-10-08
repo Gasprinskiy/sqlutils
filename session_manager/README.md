@@ -106,7 +106,7 @@ func main() {
 ```
 
 ### Without an active transaction
-Since `Session.Executor()` falls back to the underlying `*sqlx.DB` when no transaction is active,
+Since `Controller.Executor()` falls back to the underlying `*sqlx.DB` when no transaction is active,
 the same repository/query code works both inside and outside a transaction — no branching needed on the caller's side.
 ```go
 package main
