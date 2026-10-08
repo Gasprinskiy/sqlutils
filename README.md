@@ -2,7 +2,7 @@
 
 **A set of utilities to work with SQL databases:**
 - [session_manager](https://github.com/Gasprinskiy/sqlutils/tree/master/session_manager) db connection pool and transaction lifecycle management;
-- [gen_sql_executor](https://github.com/Gasprinskiy/sqlutils/tree/master/execution) type-safe SQL execution wrapper
+- [sql_execution](https://github.com/Gasprinskiy/sqlutils/tree/master/execution) type-safe SQL execution wrapper
 
 ## Install
 ```sh
