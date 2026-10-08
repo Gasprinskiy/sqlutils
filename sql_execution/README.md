@@ -1,4 +1,4 @@
-# gen_sql_executor
+# sql_execution
 
 **Type-safe SQL execution wrapper over [`jmoiron/sqlx`](https://github.com/jmoiron/sqlx) package.**
 **Provides a thin layer for executing queries via [`session_manager.Executor`](../session_manager),**
@@ -20,16 +20,16 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/sql_execution"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 func DeleteOrder(ctx context.Context, e session_manager.Executor, orderID int) error {
-	return gen_sql_executor.Exec(ctx, e, "DELETE FROM orders WHERE id = $1", orderID)
+	return sql_execution.Exec(ctx, e, "DELETE FROM orders WHERE id = $1", orderID)
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -43,9 +43,7 @@ func main() {
 	}
 	defer sessionController.Rollback()
 
-	sess := sessionController.GetSession()
-
-	if err := DeleteOrder(context.Background(), sess.Executor(), 42); err != nil {
+	if err := DeleteOrder(context.Background(), sessionController.Executor(), 42); err != nil {
 		log.Fatalln("could not delete order: ", err)
 	}
 
@@ -55,7 +53,7 @@ func main() {
 }
 ```
 
-### Get single row
+### Get single record
 ```go
 package main
 
@@ -64,8 +62,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/sql_execution"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 type Order struct {
@@ -74,11 +72,11 @@ type Order struct {
 }
 
 func GetOrder(ctx context.Context, e session_manager.Executor, orderID int) (Order, error) {
-	return gen_sql_executor.Get[Order](ctx, e, "SELECT id, status FROM orders WHERE id = $1", orderID)
+	return sql_execution.Get[Order](ctx, e, "SELECT id, status FROM orders WHERE id = $1", orderID)
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -92,12 +90,10 @@ func main() {
 	}
 	defer sessionController.Rollback()
 
-	sess := sessionController.GetSession()
-
 	// override default ErrNoData error for this query
-	ctx := gen_sql_executor.SetCustomErrNoDataCtx(context.Background(), ErrOrderNotFound)
+	ctx := sql_execution.SetCustomErrNoDataCtx(context.Background(), ErrOrderNotFound)
 
-	order, err := GetOrder(ctx, sess.Executor(), 42)
+	order, err := GetOrder(ctx, sessionController.Executor(), 42)
 	if err != nil {
 		log.Fatalln("could not get order: ", err)
 	}
@@ -106,7 +102,7 @@ func main() {
 }
 ```
 
-### Select multiple rows
+### Select multiple records
 ```go
 package main
 
@@ -115,8 +111,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/sql_execution"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 type Order struct {
@@ -125,11 +121,11 @@ type Order struct {
 }
 
 func GetOrdersByStatus(ctx context.Context, e session_manager.Executor, status string) ([]Order, error) {
-	return gen_sql_executor.Select[Order](ctx, e, "SELECT id, status FROM orders WHERE status = $1", status)
+	return sql_execution.Select[Order](ctx, e, "SELECT id, status FROM orders WHERE status = $1", status)
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -143,9 +139,7 @@ func main() {
 	}
 	defer sessionController.Rollback()
 
-	sess := sessionController.GetSession()
-
-	orders, err := GetOrdersByStatus(context.Background(), sess.Executor(), "pending")
+	orders, err := GetOrdersByStatus(context.Background(), sessionController.Executor(), "pending")
 	if err != nil {
 		log.Fatalln("could not get orders: ", err)
 	}
@@ -163,8 +157,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/sql_execution"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 type CreateOrderParams struct {
@@ -173,7 +167,7 @@ type CreateOrderParams struct {
 }
 
 func CreateOrder(ctx context.Context, e session_manager.Executor, params CreateOrderParams) (int, error) {
-	return gen_sql_executor.ExecNamedReturningState[int](
+	return sql_execution.ExecNamedReturningFields[int](
 		ctx, e,
 		"INSERT INTO orders (status, amount) VALUES (:status, :amount) RETURNING id",
 		params,
@@ -181,7 +175,7 @@ func CreateOrder(ctx context.Context, e session_manager.Executor, params CreateO
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -195,9 +189,7 @@ func main() {
 	}
 	defer sessionController.Rollback()
 
-	sess := sessionController.GetSession()
-
-	id, err := CreateOrder(context.Background(), sess.Executor(), CreateOrderParams{
+	id, err := CreateOrder(context.Background(), sessionController.Executor(), CreateOrderParams{
 		Status: "pending",
 		Amount: 100,
 	})
@@ -222,17 +214,16 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/sql_execution"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 func DeleteOrder(ctx context.Context, orderID int) error {
-	sess := session_manager.MustGetSession(ctx)
-	return gen_sql_executor.Exec(ctx, sess.Executor(), "DELETE FROM orders WHERE id = $1", orderID)
+	return sql_execution.Exec(ctx, session_manager.MustGetExecutor(ctx), "DELETE FROM orders WHERE id = $1", orderID)
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -246,7 +237,7 @@ func main() {
 	}
 	defer sessionController.Rollback()
 
-	ctx := session_manager.SetSession(context.Background(), sessionController.GetSession())
+	ctx := session_manager.SetExecutor(context.Background(), sessionController.Executor())
 
 	if err := DeleteOrder(ctx, 42); err != nil {
 		log.Fatalln("could not delete order: ", err)
@@ -261,11 +252,11 @@ func main() {
 
 ## Error handling
 
-By default, when a `Get`, `Select`, or `SelectNamed` query returns no rows, these functions return `gen_sql_executor.ErrNoData`.
+By default, when a `Get`, `Select`, or `SelectNamed` query returns no rows, these functions return `sql_execution.ErrNoData`.
 Use `SetCustomErrNoDataCtx` to override this with a domain-specific error (e.g. `ErrOrderNotFound`) for a given call:
 
 ```go
-ctx := gen_sql_executor.SetCustomErrNoDataCtx(ctx, ErrOrderNotFound)
-order, err := gen_sql_executor.Get[Order](ctx, e, "SELECT ...", orderID)
+ctx := sql_execution.SetCustomErrNoDataCtx(ctx, ErrOrderNotFound)
+order, err := sql_execution.Get[Order](ctx, e, "SELECT ...", orderID)
 // err is ErrOrderNotFound if no rows were found
 ```

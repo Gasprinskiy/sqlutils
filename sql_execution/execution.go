@@ -1,4 +1,4 @@
-package gen_sql_executor
+package sql_execution
 
 import (
 	"context"
@@ -27,26 +27,26 @@ func ExecNamed(
 	return err
 }
 
-func ExecNamedReturningState[I comparable](
+func ExecNamedReturningFields[F comparable](
 	ctx context.Context,
 	e session_manager.Executor,
 	sqlQuery string,
 	data any,
-) (I, error) {
-	var id I
+) (F, error) {
+	var fields F
 
 	stmt, err := e.PrepareNamed(sqlQuery)
 	if err != nil {
-		return id, err
+		return fields, err
 	}
 	defer stmt.Close()
 
-	err = stmt.GetContext(ctx, &id, data)
+	err = stmt.GetContext(ctx, &fields, data)
 	if err != nil {
-		return id, err
+		return fields, err
 	}
 
-	return id, nil
+	return fields, nil
 }
 
 func Get[T any](

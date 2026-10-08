@@ -1,10 +1,13 @@
 # sqlutils
 
 **A set of utilities to work with SQL databases:**
-- [session_manager](https://gitlab..uz/crm/sqlutils/-/tree/master/session_manager?ref_type=heads) transaction lifecycle management;
-- [gen_sql_executor](https://gitlab..uz/crm/sqlutils/-/tree/master/gen_sql_executor?ref_type=heads) type-safe SQL execution wrapper
+- [session_manager](https://github.com/Gasprinskiy/sqlutils/tree/master/session_manager) db connection pool and transaction lifecycle management;
+- [gen_sql_executor](https://github.com/Gasprinskiy/sqlutils/tree/master/execution) type-safe SQL execution wrapper
 
 ## Install
 ```sh
-go get gitlab..uz/crm/sqlutils@latest
+go get github.com/Gasprinskiy/sqlutils@latest
 ```
+
+## Important
+Project was made for the tasks I work on and may not be sutible for you, use with caution.

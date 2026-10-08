@@ -13,7 +13,7 @@ func NewManager(db *sqlx.DB) Manager {
 }
 
 func (s *manager) CreateController() Controller {
-	return NewController(s.db)
+	return newController(s.db)
 }
 
 type controller struct {
@@ -21,7 +21,7 @@ type controller struct {
 	tx *sqlx.Tx
 }
 
-func NewController(db *sqlx.DB) Controller {
+func newController(db *sqlx.DB) Controller {
 	return &controller{db: db}
 }
 

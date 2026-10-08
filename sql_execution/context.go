@@ -1,4 +1,4 @@
-package gen_sql_executor
+package sql_execution
 
 import "context"
 

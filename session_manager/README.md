@@ -16,8 +16,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/gen_sql_executor"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 func UpdateData(ctx context.Context, e session_manager.Executor, data int) error {
@@ -25,7 +25,7 @@ func UpdateData(ctx context.Context, e session_manager.Executor, data int) error
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -40,9 +40,7 @@ func main() {
 	}
 	defer sessionController.Rollback()
 
-	sess := sessionController.GetSession()
-
-	if err := UpdateData(context.Background(), sess.Executor(), 10); err != nil {
+	if err := UpdateData(context.Background(), sessionController.Executor(), 10); err != nil {
 		log.Fatalln("could not update data")
 		return
 	}
@@ -64,8 +62,8 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/gen_sql_executor"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 func UpdateData(ctx context.Context, data int) error {
@@ -78,7 +76,7 @@ func main() {
 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(3*time.Second))
 	defer cancel()
 
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -118,8 +116,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab..uz/crm/sqlutils/gen_sql_executor"
-	"gitlab..uz/crm/sqlutils/session_manager"
+	"github.com/Gasprinskiy/sqlutils/gen_sql_executor"
+	"github.com/Gasprinskiy/sqlutils/session_manager"
 )
 
 func UpdateData(ctx context.Context, e session_manager.Executor, data int) error {
@@ -127,7 +125,7 @@ func UpdateData(ctx context.Context, e session_manager.Executor, data int) error
 }
 
 func main() {
-	pgdb, err := sqlx.Connect("pgx", "pg_example:5432")
+	pgdb, err := sqlx.Connect("pgx", "dbadr")
 	if err != nil {
 		log.Fatalln("could not connect to postgres database: ", err)
 	}
@@ -136,10 +134,8 @@ func main() {
 	sessionManager := session_manager.NewManager(pgdb)
 	sessionController := sessionManager.CreateController()
 
-	// no Start() call — GetSession() falls back to *sqlx.DB
-	sess := sessionController.GetSession()
-
-	if err := UpdateData(context.Background(), sess.Executor(), 10); err != nil {
+	// no Start() call — Executor() falls back to *sqlx.DB
+	if err := UpdateData(context.Background(), sessionController.Executor(), 10); err != nil {
 		log.Fatalln("could not update data")
 	}
 }
